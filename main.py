@@ -70,4 +70,19 @@ async def unban(ctx, member: discord.User):
     except:
         await ctx.send(f'{member} is not banned! *Maybe you spelled it wrong?*')
 
+@bot.command(name='ban', help='Bans a user from the server')
+@commands.has_any_role(1284509033369305169, 1284508992944476210, 1284508939035349103, 1284508891429736579, 1272930547714232320, 1272963029444595774)
+async def ban(ctx, member: discord.User, *, reason=None):
+    guild_id = 1259717095382319215
+    await ctx.send(f'Looking for {member.name}...')
+    try:
+        (await bot.get_guild(guild_id)).ban(member, reason=reason)
+        await ctx.reply(f':white_check_mark:')
+    except:
+        await ctx.send(f'{member} is already banned!')
+        response = await ctx.prompt(f'Do you want to ban {member.mention} from this server aswell? (y/n)', delete_after=True)
+        if response.content.lower() == 'y':
+            await ctx.guild.ban(member, reason=reason)
+            await ctx.send(f':white_check_mark:')
+
 bot.run(config['TOKEN'])

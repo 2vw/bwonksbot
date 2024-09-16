@@ -1,4 +1,4 @@
-import json, discord, datetime
+import json, discord, datetime, random
 from discord.ext import commands 
 
 with open('config.json') as config_file:
@@ -14,7 +14,13 @@ async def on_ready():
     print('------')
     print(f'{bot.user} has connected to Discord!')
 
-
+@bot.event
+async def on_message(message):
+    if message.author.id == 593921296224747521:
+        if 'welcome' in message.content.lower():
+            emojis = [e for e in bot.get_guild(1259717095382319215).emojis if e.is_usable()]
+            await message.add_reaction(random.choice(emojis))
+    await bot.process_commands(message)
 
 recent_changes = []
 
